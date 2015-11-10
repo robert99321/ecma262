@@ -1,3 +1,6 @@
+html {
+}
+
 body {
     font-size: 18px;
     line-height: 1.5;
@@ -5,6 +8,7 @@ body {
     padding: 0;
     color: #333;
     margin: 0 2% 0 31%;
+    overflow-x: hidden;
 }
 
 body.oldtoc {
@@ -409,12 +413,20 @@ del.block {
   transition: opacity 0.1s linear;
 }
 
+#menu a {
+  color: #a6b8c4;
+}
+
 #menu.active {
   display: block;
   opacity: 1;
 }
 
 #menu-toc > ol {
+  padding: 0;
+}
+
+#menu-toc > ol li {
   padding: 0;
 }
 
@@ -436,7 +448,8 @@ del.block {
   display: inline-block;
   transform: rotate(-45deg) translate(-5px, -5px);
   transition: transform 0.1s ease;
-  width: 1em;
+  text-align: center;
+  width: 20px;
 
   color: #555F6E;
 
@@ -452,7 +465,7 @@ del.block {
 
 #menu-toc .item-toggle-none {
   display: inline-block;
-  width: 1em;
+  width: 20px;
 }
 
 #menu-toc li.active > .item-toggle {
@@ -467,21 +480,45 @@ del.block {
   display: block;
 }
 
-#menu-toc li > a {
-  padding-left: 0.25em;
-  color: #B6C8E4;
+#menu-toc li.revealed > a {
+  background-color: #222;
+  color: #aaa;
+  font-weight: bold;
+  /*
+  background-color: #222;
+  color: #c6d8e4;
+  */
 }
 
-#menu-search {
-  color: #B6C8E4;
+#menu-toc li.revealed-leaf> a {
+  background-color: #bbb;
+  color: #206ca7;
+  /*
+  background-color: #222;
+  color: #c6d8e4;
+  */
+}
+
+#menu-toc li.revealed > .item-toggle {
+  transform: rotate(45deg) translate(-5px, -5px);
+}
+
+#menu-toc li.revealed > ol {
+  display: block;
+}
+
+#menu-toc li > a {
+  padding: 2px 5px;
 }
 
 #menu-search-box {
   display: block;
-  width: 90%;
+  width: calc(100% - 48px);
   margin: 5px auto;
   font-size: 1em;
   padding: 2px;
+  background-color: #aaa;
+  border: 1px solid #ccc;
 }
 
 #menu-search-results.inactive {
@@ -498,8 +535,31 @@ del.block {
   white-space: nowrap;
 }
 
-#menu-search-results a {
-  color: #b6c8e4;
+
+#menu-trace-list {
+  counter-reset: item;
+  margin: 0 0 0 20px;
+  padding: 0;
+}
+#menu-trace-list li {
+  display: block;
+  white-space: nowrap;
+}
+
+#menu-trace-list li .secnum:after {
+  content: " ";
+}
+#menu-trace-list li:before {
+    content: counter(item) " ";
+    background-color: #222;
+    counter-increment: item;
+    color: #999;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+    text-align: center;
+    margin: 2px 4px 2px 0;
 }
 
 @media (max-width: 1366px) {
