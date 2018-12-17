@@ -1667,7 +1667,7 @@
       <emu-clause id="sec-well-known-intrinsic-objects">
         <h1>Well-Known Intrinsic Objects</h1>
         <p>Well-known intrinsics are built-in objects that are explicitly referenced by the algorithms of this specification and which usually have realm-specific identities. Unless otherwise specified each intrinsic object actually corresponds to a set of similar objects, one per realm.</p>
-        <p>Within this specification a reference such as %name% means the intrinsic object, associated with the current realm, corresponding to the name. Determination of the current realm and its intrinsics is described in <emu-xref href="#sec-execution-contexts"></emu-xref>. The well-known intrinsics are listed in <emu-xref href="#table-7"></emu-xref>.</p>
+        <p>Within this specification a reference such as %name% means the intrinsic object, associated with the current realm, corresponding to the name. A reference such as %name.a.b% means, as if the "b" property of the "a" property of thhe intrinsic object %name% was accessed prior to any ECMAScript code being evaluated. Determination of the current realm and its intrinsics is described in <emu-xref href="#sec-execution-contexts"></emu-xref>. The well-known intrinsics are listed in <emu-xref href="#table-7"></emu-xref>.</p>
         <emu-table id="table-7" caption="Well-Known Intrinsic Objects">
           <table>
             <tbody>
@@ -1712,7 +1712,7 @@
                 `ArrayBuffer.prototype`
               </td>
               <td>
-                The initial value of the `prototype` data property of %ArrayBuffer%.
+                The initial value of the `prototype` data property of %ArrayBuffer%; e.g, %ArrayBuffer.prototype%
               </td>
             </tr>
             <tr>
@@ -1722,7 +1722,7 @@
               <td>
               </td>
               <td>
-                The prototype of Array iterator objects (<emu-xref href="#sec-array-iterator-objects"></emu-xref>)
+                The prototype of Array iterator objects (<emu-xref href="#sec-array-iterator-objects"></emu-xref>); e.g, %ArrayIterator.prototype%
               </td>
             </tr>
             <tr>
@@ -32356,7 +32356,7 @@ THH:mm:ss.sss
         <p>Several methods of Array objects return Iterator objects. The abstract operation CreateArrayIterator with arguments _array_ and _kind_ is used to create such iterator objects. It performs the following steps:</p>
         <emu-alg>
           1. Assert: Type(_array_) is Object.
-          1. Let _iterator_ be ObjectCreate(%ArrayIteratorPrototype%, &laquo; [[IteratedObject]], [[ArrayIteratorNextIndex]], [[ArrayIterationKind]] &raquo;).
+          1. Let _iterator_ be ObjectCreate(%ArrayIterator.prototype%, &laquo; [[IteratedObject]], [[ArrayIteratorNextIndex]], [[ArrayIterationKind]] &raquo;).
           1. Set _iterator_.[[IteratedObject]] to _array_.
           1. Set _iterator_.[[ArrayIteratorNextIndex]] to 0.
           1. Set _iterator_.[[ArrayIterationKind]] to _kind_.
@@ -32365,8 +32365,8 @@ THH:mm:ss.sss
       </emu-clause>
 
       <emu-clause id="sec-%arrayiteratorprototype%-object">
-        <h1>The %ArrayIteratorPrototype% Object</h1>
-        <p>The <dfn>%ArrayIteratorPrototype%</dfn> object:</p>
+        <h1>The %ArrayIterator.prototype% Object</h1>
+        <p>The <dfn>%ArrayIterator.prototype%</dfn> object:</p>
         <ul>
           <li>has properties that are inherited by all Array Iterator Objects.</li>
           <li>is an ordinary object.</li>
@@ -32375,7 +32375,7 @@ THH:mm:ss.sss
         </ul>
 
         <emu-clause id="sec-%arrayiteratorprototype%.next">
-          <h1>%ArrayIteratorPrototype%.next ( )</h1>
+          <h1>%ArrayIterator.prototype%.next ( )</h1>
           <emu-alg>
             1. Let _O_ be the *this* value.
             1. If Type(_O_) is not Object, throw a *TypeError* exception.
@@ -32405,7 +32405,7 @@ THH:mm:ss.sss
         </emu-clause>
 
         <emu-clause oldids="sec-%arrayiteratorprototype%-@@tostringtag" id="sec-%arrayiteratorprototype%-%symbol.tostringtag%">
-          <h1>%ArrayIteratorPrototype% [ %Symbol.toStringTag% ]</h1>
+          <h1>%ArrayIterator.prototype% [ %Symbol.toStringTag% ]</h1>
           <p>The initial value of the %Symbol.toStringTag% property is the String value `"Array Iterator"`.</p>
           <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
         </emu-clause>
@@ -32413,7 +32413,7 @@ THH:mm:ss.sss
 
       <emu-clause id="sec-properties-of-array-iterator-instances">
         <h1>Properties of Array Iterator Instances</h1>
-        <p>Array Iterator instances are ordinary objects that inherit properties from the %ArrayIteratorPrototype% intrinsic object. Array Iterator instances are initially created with the internal slots listed in <emu-xref href="#table-48"></emu-xref>.</p>
+        <p>Array Iterator instances are ordinary objects that inherit properties from the %ArrayIterator.prototype% intrinsic object. Array Iterator instances are initially created with the internal slots listed in <emu-xref href="#table-48"></emu-xref>.</p>
         <emu-table id="table-48" caption="Internal Slots of Array Iterator Instances">
           <table>
             <tbody>
@@ -34637,7 +34637,7 @@ THH:mm:ss.sss
         <h1>AllocateArrayBuffer ( _constructor_, _byteLength_ )</h1>
         <p>The abstract operation AllocateArrayBuffer with arguments _constructor_ and _byteLength_ is used to create an ArrayBuffer object. It performs the following steps:</p>
         <emu-alg>
-          1. Let _obj_ be ? OrdinaryCreateFromConstructor(_constructor_, `"%ArrayBufferPrototype%"`, &laquo; [[ArrayBufferData]], [[ArrayBufferByteLength]], [[ArrayBufferDetachKey]] &raquo;).
+          1. Let _obj_ be ? OrdinaryCreateFromConstructor(_constructor_, `"%ArrayBuffer.prototype%"`, &laquo; [[ArrayBufferData]], [[ArrayBufferByteLength]], [[ArrayBufferDetachKey]] &raquo;).
           1. Assert: _byteLength_ is an integer value &ge; 0.
           1. Let _block_ be ? CreateByteDataBlock(_byteLength_).
           1. Set _obj_.[[ArrayBufferData]] to _block_.
@@ -34842,7 +34842,7 @@ THH:mm:ss.sss
 
       <emu-clause id="sec-arraybuffer.prototype">
         <h1>ArrayBuffer.prototype</h1>
-        <p>The initial value of `ArrayBuffer.prototype` is the intrinsic object %ArrayBufferPrototype%.</p>
+        <p>The initial value of `ArrayBuffer.prototype` is the intrinsic object %ArrayBuffer.prototype%.</p>
         <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false* }.</p>
       </emu-clause>
 
@@ -34863,7 +34863,7 @@ THH:mm:ss.sss
       <h1>Properties of the ArrayBuffer Prototype Object</h1>
       <p>The ArrayBuffer prototype object:</p>
       <ul>
-        <li>is the intrinsic object <dfn>%ArrayBufferPrototype%</dfn>.</li>
+        <li>is the intrinsic object <dfn>%ArrayBuffer.prototype%</dfn>.</li>
         <li>has a [[Prototype]] internal slot whose value is the intrinsic object %ObjectPrototype%.</li>
         <li>is an ordinary object.</li>
         <li>does not have an [[ArrayBufferData]] or [[ArrayBufferByteLength]] internal slot.</li>
