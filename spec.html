@@ -32154,34 +32154,46 @@ THH:mm:ss.sss
         <emu-note>
           <p>The elements of the array are converted to Strings, and these Strings are then concatenated, separated by occurrences of the _separator_. If no separator is provided, a single comma is used as the separator.</p>
         </emu-note>
-        <emu-note>
-          The `join` method has a [[SeenObjects]] internal slot whose value is a new empty List.
-        </emu-note>
         <p>The `join` method takes one argument, _separator_, and performs the following steps:</p>
         <emu-alg>
           1. Let _O_ be ? ToObject(*this* value).
           1. Let _len_ be ? ToLength(? Get(_O_, `"length"`)).
           1. If _separator_ is *undefined*, let _sep_ be the single-element String `","`.
           1. Else, let _sep_ be ? ToString(_separator_).
-          1. Let _R_ be the empty String.
-          1. Let _k_ be 0.
-          1. Let _seen_ be %Array.prototype.join%.[[SeenObjects]].
-          1. Repeat, while _k_ &lt; _len_
-            1. If _k_ &gt; 0, set _R_ to the string-concatenation of _R_ and _sep_.
-            1. Let _element_ be ? Get(_O_, ! ToString(_k_)).
-            1. If Type(_element_) is Object and _seen_ contains _element_, then
-              1. Let _next_ be the empty String.
-            1. Else,
-              1. If Type(_element_) is Object, append _element_ to _seen_.
-              1. If _element_ is *undefined* or *null*, let _next_ be the empty String; otherwise, let _next_ be ? ToString(_element_).
-            1. Set _R_ to the string-concatenation of _R_ and _next_.
-            1. Increase _k_ by 1.
-          1. Set %Array.prototype.join%.[[SeenObjects]] to a new empty List.
-          1. Return _R_.
+          1. Return ArrayJoin(_O_, _separator_, a new empty List).
         </emu-alg>
         <emu-note>
           <p>The `join` function is intentionally generic; it does not require that its *this* value be an Array object. Therefore, it can be transferred to other kinds of objects for use as a method.</p>
         </emu-note>
+      </emu-clause>
+
+      <emu-clause id="sec-arrayjoin" aoid="ArrayJoin">
+        <h1>ArrayJoin ( _O_, _sep_, _seen_ )</h1>
+        <p>The abstract operation ArrayJoin performs the following steps:</p>
+        <emu-alg>
+          1. Assert: Type(_O_) is Object.
+          1. Assert: Type(_sep_) is String.
+          1. Assert: _seen_ is a List.
+          1. If _seen_ contains _O_, return the empty string.
+          1. Add _O_ to _seen_.
+          1. Let _k_ be 0.
+          1. Let _R_ be the empty string.
+          1. Let _len_ be ? ToLength(? Get(_O_, `"length"`)).
+          1. Repeat, while _k_ &lt; _len_
+            1. If _k_ &gt; 0, set _R_ to the string-concatenation of _R_ and _sep_.
+            1. Let _element_ be ? Get(_O_, ! ToString(_k_)).
+            1. If _element_ is in _seen_, or _element_ is is *undefined* or *null*,
+              1. Let _next_ be the empty string.
+            1. Else,
+              1. Let _m_ be ? GetV(_O_, `"toString"`).
+              1. If SameIntrinsicAnyRealm(_m_, %ArrayProto_toString%) is *true*,
+                1. Let _next_ be ? ArrayJoin(_element_, _sep_, _seen_).
+              1. Else,
+                1. Let _next_ be ? ToString(_element_).
+            1. Set _R_ to the string-concatenation of _R_ and _next_.
+            1. Increase _k_ by 1.
+          1. Return _R_.
+        </emu-alg>
       </emu-clause>
 
       <emu-clause id="sec-array.prototype.keys">
